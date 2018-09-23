@@ -1,8 +1,0 @@
-com/meetups/userservice/repository/UserRepository.class
-com/meetups/userservice/UserServiceApplication.class
-com/meetups/userservice/SwaggerConfig.class
-com/meetups/userservice/pojo/User$UserBuilder.class
-com/meetups/userservice/controller/UserController.class
-com/meetups/userservice/pojo/User.class
-com/meetups/userservice/AuthDataSourceConfiguration.class
-com/meetups/userservice/repository/MongoHealth.class
