@@ -1,0 +1,32 @@
+server:
+  port: 2223
+  connection-timeout: 10s
+
+#configuracion de MongoBD
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      username: search
+      password: password
+      database: test
+
+application:
+  name: user-service
+
+info:
+  build:
+    artifact: @project.artifactId@
+    name: @project.name@
+    description: @project.description@
+    version: @project.version@
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
