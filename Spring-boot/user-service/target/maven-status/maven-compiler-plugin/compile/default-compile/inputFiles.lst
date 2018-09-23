@@ -1,0 +1,7 @@
+/Users/javier/Documents/GitHub/Laboratorios/todos-project/user-service/src/main/java/com/meetups/userservice/UserServiceApplication.java
+/Users/javier/Documents/GitHub/Laboratorios/todos-project/user-service/src/main/java/com/meetups/userservice/controller/UserController.java
+/Users/javier/Documents/GitHub/Laboratorios/todos-project/user-service/src/main/java/com/meetups/userservice/repository/UserRepository.java
+/Users/javier/Documents/GitHub/Laboratorios/todos-project/user-service/src/main/java/com/meetups/userservice/repository/MongoHealth.java
+/Users/javier/Documents/GitHub/Laboratorios/todos-project/user-service/src/main/java/com/meetups/userservice/pojo/User.java
+/Users/javier/Documents/GitHub/Laboratorios/todos-project/user-service/src/main/java/com/meetups/userservice/SwaggerConfig.java
+/Users/javier/Documents/GitHub/Laboratorios/todos-project/user-service/src/main/java/com/meetups/userservice/AuthDataSourceConfiguration.java
