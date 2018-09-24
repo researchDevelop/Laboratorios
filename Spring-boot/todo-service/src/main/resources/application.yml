@@ -1,0 +1,33 @@
+application:
+  name: todo-service
+server:
+  port: 2223
+  connection-timeout: 10s
+info:
+  build:
+    artifact: @project.artifactId@
+    name: @project.name@
+    description: @project.description@
+    version: @project.version@
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+#configuracion de MongoBD
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      username: search
+      password: password
+      database: test
+
+user:
+    url: "http://localhost:2222/v1/user/{id}"
+    urlTest: "http://localhost:2222/v1/user"

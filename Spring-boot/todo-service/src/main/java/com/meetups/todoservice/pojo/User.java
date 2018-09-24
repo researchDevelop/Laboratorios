@@ -1,4 +1,4 @@
-package com.meetups.userservice.pojo;
+package com.meetups.todoservice.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -20,13 +20,11 @@ import java.util.Optional;
 @Data // lombok @Data encapsula @Getter, @Setter, @ToString, @EqualsAndHashCode and @RequiredArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Document(collection = "Users") //nombre de la conllection que se crea en mongo
 @Builder // lombok permite generar los constructores
 @Api
 public class User {
 
     @Id // notacion para indicar a mongo que esta id sera unica
-    @JsonIgnore // el json generado ignorara este field.
     @ToString.Exclude // se excluira del toString
     private ObjectId _id;
     @Valid // validando los datos
