@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static org.springframework.boot.actuate.health.Health.*;
+
 @Component
 public class MongoHealth implements HealthIndicator {
 
@@ -21,12 +23,12 @@ public class MongoHealth implements HealthIndicator {
        try {
            List<Todo> todos = this.repository.findAll();
            if (todos != null){
-               return Health.up().build();
+               return up().build();
            }else{
-               return Health.down().build();
+               return down().build();
            }
        }catch (Exception e){
-           return Health.down(e).build();
+           return down(e).build();
        }
     }
 

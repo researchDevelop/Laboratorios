@@ -20,6 +20,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.Optional;
 
+import static org.springframework.http.HttpStatus.NOT_MODIFIED;
+import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController
 @RequestMapping("/v1/todo")
 @Api(value = "TODO's CRUD", description = "Operaciones para la administracion de Todos")
@@ -43,9 +47,9 @@ public class TodoController {
         try{
             Optional<Todo> todoOptional = respository.findById(id);
             if (todoOptional.isPresent())
-                return ResponseEntity.ok().body(todoOptional.get());
+                return ok().body(todoOptional.get());
             else
-                return ResponseEntity.noContent().build();
+                return noContent().build();
         }catch (Exception e){
             return new ResponseEntity(e.getLocalizedMessage(), HttpStatus.NO_CONTENT);
         }
@@ -70,11 +74,11 @@ public class TodoController {
             if (todoInserted.get_id().isPresent()) {
                 URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                         .buildAndExpand(todoInserted.get_id()).toUri();
-                return ResponseEntity.created(location).build();
+                return created(location).build();
             } else
-                return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+                return new ResponseEntity(NOT_MODIFIED);
         }catch (Exception e){
-            return new ResponseEntity(e.getLocalizedMessage(), HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity(e.getLocalizedMessage(), NOT_MODIFIED);
         }
     }
 
@@ -93,11 +97,11 @@ public class TodoController {
             respository.deleteById(id);
             Optional<Todo> todoOptional = respository.findById(id);
             if (!todoOptional.isPresent())
-                return ResponseEntity.ok().build();
+                return ok().build();
             else
-                return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+                return new ResponseEntity(NOT_MODIFIED);
         }catch (Exception e){
-            return new ResponseEntity(e.getLocalizedMessage(), HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity(e.getLocalizedMessage(), NOT_MODIFIED);
         }
     }
 
@@ -117,14 +121,14 @@ public class TodoController {
         try{
             Optional<Todo> todoOptional = this.respository.findById(id);
             if (!todoOptional.isPresent())
-                return ResponseEntity.noContent().build();
+                return noContent().build();
             else{
                 todo.set_id(new ObjectId(id));
                 Todo savedTodo = respository.save(todo);
-                return ResponseEntity.ok(savedTodo);
+                return ok(savedTodo);
             }
         }catch (Exception e){
-            return new ResponseEntity(e.getLocalizedMessage(), HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity(e.getLocalizedMessage(), NOT_MODIFIED);
         }
     }
 
