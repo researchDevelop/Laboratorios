@@ -9,12 +9,13 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Optional;
 
-@RestController
+@Component
 @RequestMapping("/v1/user")
 @Api(value = "User CRUD", description = "Operaciones para la administracion de Usuarios")
 public class UserController {

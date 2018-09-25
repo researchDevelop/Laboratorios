@@ -13,18 +13,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.NOT_MODIFIED;
 import static org.springframework.http.ResponseEntity.*;
-import static org.springframework.http.ResponseEntity.ok;
 
-@RestController
+@Component
 @RequestMapping("/v1/todo")
 @Api(value = "TODO's CRUD", description = "Operaciones para la administracion de Todos")
 public class TodoController {
@@ -82,7 +83,7 @@ public class TodoController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ApiOperation(value = "Elimina un Todo",
             notes = "Elimina un Todo",
             response = ResponseEntity.class)
@@ -127,6 +128,29 @@ public class TodoController {
                 Todo savedTodo = respository.save(todo);
                 return ok(savedTodo);
             }
+        }catch (Exception e){
+            return new ResponseEntity(e.getLocalizedMessage(), NOT_MODIFIED);
+        }
+    }
+
+    @DeleteMapping
+    @ApiOperation(value = "Elimina All",
+            notes = "Elimina All",
+            response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Eliminado", response = ResponseEntity.class),
+            @ApiResponse(code = 304, message = "No modificado", response = ResponseEntity.class)
+    }
+    )
+    public ResponseEntity deleteAllTodo(){
+        logger.info("Eliminando todo");
+        try{
+            respository.deleteAll();
+            List<Todo> todoOptional = respository.findAll();
+            if (todoOptional.isEmpty())
+                return ok().build();
+            else
+                return new ResponseEntity(NOT_MODIFIED);
         }catch (Exception e){
             return new ResponseEntity(e.getLocalizedMessage(), NOT_MODIFIED);
         }

@@ -1,5 +1,6 @@
 application:
   name: todo-service
+  timezone: GMT-3
 server:
   port: 2223
   connection-timeout: 10s
