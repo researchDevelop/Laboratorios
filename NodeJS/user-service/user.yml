@@ -1,0 +1,386 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0-oas3"
+  title: Mantenedor de TODO's
+  description: A sample API that uses a TODO's as an example to demonstrate features in the OpenAPI 3.0 specification
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: Tecnova
+    email: eleal@tecnova.cl`
+    url: http://tecnova.cl
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  x-logo:
+    url: >-
+      https://ii.ct-stc.com/4/logos/empresas/2017/11/17/tecnova-soluciones-informaticas-C5F9C85B07E7942A134827thumbnail.jpeg
+    backgroundColor: '#FFFFFF'
+    altText: Tecnova Solutions
+x-tagGroups:
+  - name: User Management
+    tags:
+      - Users
+      - API keys
+  - name: TODO's Management
+    tags:
+      - Todos
+      - API keys
+paths:
+  /users:
+    security: 
+      - appId: []
+      - ApiKeyAuth: []
+    get:
+      summary: lista de todos los Usuarios
+      operationId: listUsers
+      tags:
+        - Users
+      responses:
+        '200':
+          description: A User object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+    post:
+      summary: Crea un Usuario
+      operationId: createUser
+      requestBody:
+        description: Objeto requerido para crear un usuario
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      tags:
+        - Users
+      responses:
+        '201':
+          description: Creado
+        '405':
+          description: Request invalido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Problema al Crear usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Usuario Creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      summary: Elimina todos los usuarios
+      operationId: deleteAllUser
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Todos los Usuarios fueron eliminados
+        '304':
+          description: No se pudieron eliminar
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/users/{userId}':
+    get:
+      summary: Informacion de un usuario en especifico
+      operationId: showUserById
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: El id del usuario solicitado
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Respuesta valida para una solicitud correcta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '204':
+          description: No existe el usuario
+    delete:
+      summary: Elimina el usuario solicitado
+      operationId: showUserById
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: El id del usuario solicitado
+          schema:
+            type: string
+      responses:
+        '200':
+          description: El usuario seleccionado fue eliminado
+        '304':
+          description: No se pudo eliminar el usuario solicitado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      summary: Actualiza el usuario
+      operationId: updateUserById
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: El id del usuario solicitado
+          schema:
+            type: string
+      requestBody:
+        description: Objeto requerido para actualizar un usuario
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: El usuario seleccionado fue eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '304':
+          description: No se pudo actualizar el usuario solicitado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/users/{userId}/todos/{todoId}':
+    get:
+      summary: Obtiene el TODO del usuario
+      operationId: getTodoById
+      tags:
+        - Todos
+        - Users
+      parameters:
+        - name: todoId
+          in: path
+          required: true
+          description: El id del TODO solicitado
+          schema:
+            type: string
+        - name: userId
+          in: path
+          required: true
+          description: El id del USER solicitado
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Obtiene el TODO por su identificador
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '204':
+          description: No existe el TODO solicitado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/users/{userId}/todos':
+    get:
+      summary: Obtiene todos los TODO's del usuario solicitados
+      operationId: getAllTodosForUser
+      tags:
+        - Todos
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: El id del USER solicitado
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Obtiene todos los TODO's para el usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todos'
+        '204':
+          description: No existen el TODO's para el usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/todos/{todoId}':
+    get:
+      summary: Obtiene TODO por su identificador
+      operationId: getTodoById
+      tags:
+        - Todos
+      parameters:
+        - name: todoId
+          in: path
+          required: true
+          description: El id del TODO solicitado
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Obtiene el TODO por su identificador
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '204':
+          description: No existe el TODO solicitado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Elimina un TODO via su identificador
+      operationId: deleteById
+      tags:
+        - Todos
+      parameters:
+        - name: todoId
+          in: path
+          required: true
+          description: El id del TODO solicitado
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Elimina el TODO por su identificador
+        '304':
+          description: No se pudo eliminar
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      summary: Actualiza el TODO
+      operationId: updateTodoById
+      tags:
+        - Todos
+      parameters:
+        - name: todoId
+          in: path
+          description: TODO ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Objeto requerido para actualizar un TODO
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+      responses:
+        '200':
+          description: El TODO seleccionado fue actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '304':
+          description: No se pudo actualizar el TODO solicitado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: password
+    appId:
+      type: apiKey
+      in: header
+      name: user
+  schemas:
+    User:
+      type: object
+      required:
+        - name
+        - lastName
+        - age
+        - email
+      properties:
+        id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+        lastName:
+          type: string
+        age:
+          type: integer
+        email:
+          type: string
+    Users:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    Todo:
+      type: object
+      required:
+        - action
+        - description
+        - user
+        - finished
+      properties:
+        id:
+          type: string
+          readOnly: true
+        action:
+          type: string
+        description:
+          type: string
+        user:
+          type: string
+        finished:
+          type: boolean
+        createdAt:
+          type: string
+          readOnly: true
+        finishedAt:
+          type: string
+          readOnly: true
+    Todos:
+      type: array
+      items:
+        $ref: '#/components/schemas/Todo'
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+servers:
+  - url: 'https://development.gigantic-server.com/v1'
+    description: Development server
+  - url: 'https://staging.gigantic-server.com/v1'
+    description: Staging server
+  - url: 'https://api.gigantic-server.com/v1'
+    description: Production server
+    
