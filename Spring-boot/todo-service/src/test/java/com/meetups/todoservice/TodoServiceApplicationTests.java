@@ -43,57 +43,17 @@ public class TodoServiceApplicationTests {
 	}
 
 	@Test
-	public void POST_GetFullDataOfDayOK() throws Exception {
+	public void GET_NotContent() throws Exception {
 
 		MockHttpServletRequestBuilder builder =
-				MockMvcRequestBuilders.post("/v1/weather")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(toJson( Todo.builder().build()
-						));
+				MockMvcRequestBuilders.get("/v1/todo/{id}","5ba18dd1b07201326424334d");
 		this.mockMvc.perform(builder)
-				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(jsonPath("$.CityName").exists())
-				.andExpect(jsonPath("$.CityCode").exists())
-				.andExpect(jsonPath("$.Weather").exists())
-				.andExpect(jsonPath("$.Weather", hasSize(1)))
+				.andExpect(MockMvcResultMatchers.status().isNoContent())
 				.andDo(MockMvcResultHandlers.print());
 
 
 	}
-	@Test
-	public void POST_GetFullDataOfWeekOK() throws Exception {
 
-		MockHttpServletRequestBuilder builder =
-				MockMvcRequestBuilders.post("/v1/weather")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(toJson(
-								Todo.builder().build()
-						));
-		this.mockMvc.perform(builder)
-				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-				.andExpect(jsonPath("$.CityName").exists())
-				.andExpect(jsonPath("$.CityCode").exists())
-				.andExpect(jsonPath("$.Weather").exists())
-				.andExpect(jsonPath("$.Weather.[*]", hasSize(6)))
-				.andDo(MockMvcResultHandlers.print());
-	}
-
-	@Test
-	public void POST_OnMessagesWithEmptyDataReturnsBadRequest400() throws Exception {
-		MockHttpServletRequestBuilder builder =
-				MockMvcRequestBuilders.post("/v1/weather")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(toJson(
-								Todo.builder().build()
-						));
-		this.mockMvc.perform(builder)
-				.andExpect(MockMvcResultMatchers.status().isBadRequest())
-				.andExpect(jsonPath("$.message").exists())
-				.andExpect(jsonPath("$.message", is("Bad Request")))
-				.andDo(MockMvcResultHandlers.print());
-
-	}
 
 	private String toJson(Object object) throws JsonProcessingException {
 		return mapper.writeValueAsString(object);

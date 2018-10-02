@@ -15,6 +15,9 @@ public class UserServiceProperties {
      */
     //@Pattern(regexp = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/{}%=~_|]")
     private String url;
+    /**
+     * formato de url test debe ser de tipo url
+     */
     @Pattern(regexp = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]")
     private String urlTest;
 

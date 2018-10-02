@@ -55,7 +55,6 @@ public class TodoController {
             return new ResponseEntity(e.getLocalizedMessage(), HttpStatus.NO_CONTENT);
         }
     }
-
     @PostMapping(produces = "application/json",consumes = "application/json")
     @ApiOperation(value = "Genera un Todo",
             notes = "Inserta un Todo",
