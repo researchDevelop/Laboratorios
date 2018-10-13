@@ -5,17 +5,11 @@ info:
   description: A sample API that uses a TODO's as an example to demonstrate features in the OpenAPI 3.0 specification
   termsOfService: http://swagger.io/terms/
   contact:
-    name: Tecnova
-    email: eleal@tecnova.cl`
-    url: http://tecnova.cl
+    name: Javier Leal
+    email: edo.javier.leal@gmail.com
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  x-logo:
-    url: >-
-      https://ii.ct-stc.com/4/logos/empresas/2017/11/17/tecnova-soluciones-informaticas-C5F9C85B07E7942A134827thumbnail.jpeg
-    backgroundColor: '#FFFFFF'
-    altText: Tecnova Solutions
 x-tagGroups:
   - name: User Management
     tags:
@@ -27,9 +21,6 @@ x-tagGroups:
       - API keys
 paths:
   /users:
-    security: 
-      - appId: []
-      - ApiKeyAuth: []
     get:
       summary: lista de todos los Usuarios
       operationId: listUsers
@@ -382,4 +373,4 @@ servers:
   - url: 'https://staging.gigantic-server.com/v1'
     description: Staging server
   - url: 'https://api.gigantic-server.com/v1'
-    description: Production server
+    description: Production servers
