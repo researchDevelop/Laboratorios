@@ -16,10 +16,9 @@ let getAllUser = (req, res, next) => {
 
 let removeUser = (req, res, next) => {
   User.deleteOne({ _id: req.params.userId })
-    .exec()
     .then(result => {
       res.status(200).json({
-        message: result
+        message: "Usuario Eliminado"
       });
     })
     .catch(err => {
@@ -33,8 +32,8 @@ let addUser = (req, res, next) => {
   const user = new User(req.body);
   user.save().then(user => {
     res.status(201).json({
-      user: user,
-      message: "Usuario Creado"
+      message: "Usuario Creado",
+      User: user
     });
   })
   .catch(err => {
@@ -44,8 +43,30 @@ let addUser = (req, res, next) => {
   });
 };
 
+let updateUser = (req, res, next) => {
+  const id = req.params.userId;
+  const updateOps = {};
+  for (const ops of req.body) {
+    updateOps[ops.propName] = ops.value;
+  }
+  User.update({ _id: id }, { $set: updateOps })
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: "Usuario Actualizado"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
 module.exports = {
   getAllUser,
   addUser,
+  updateUser,
   removeUser
 };
