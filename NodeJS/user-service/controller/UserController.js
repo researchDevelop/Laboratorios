@@ -1,4 +1,4 @@
-const User = require('../repository/user.model');
+const User = require('../repository/userModel');
 
 let getAllUser = (req, res, next) => {
   User.find()

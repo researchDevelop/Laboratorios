@@ -1,15 +1,14 @@
 let express = require('express');
-let app = express();
 let userRoute = require('./routes/userRouter');
 let { serverSettings } = require('./config/config');
-let logger = require('winston');
+let logger = require('./config/logger');
 const db = require('./db');
 const bodyParser = require('body-parser');
 let mongoose = require('mongoose');
-let morgan = require('morgan');
-//middlewares
-//logger
+let sessionConfig = require('./config/session');
 
+let app = express();
+sessionConfig(app);
 app.use(bodyParser.json());
 
 //mapeamos el router
@@ -17,7 +16,6 @@ app.use(userRoute);
 
 mongoose.Promise = global.Promise;
 
-app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 

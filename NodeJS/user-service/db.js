@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 let { dbSettings } = require('./config/config');
-let logger = require('winston');
+let logger = require('./config/logger');
 
 mongoose.set("debug", (collectionName, method, query, doc) => {
   logger.info(`${collectionName}.${method}`, JSON.stringify(query), doc);
