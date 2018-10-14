@@ -6,15 +6,18 @@ const db = require('./db');
 const bodyParser = require('body-parser');
 let mongoose = require('mongoose');
 let sessionConfig = require('./config/session');
+mongoose.Promise = global.Promise;
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./api-docs.json');
 
 let app = express();
 sessionConfig(app);
 app.use(bodyParser.json());
 
+//swagger doc
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 //mapeamos el router
-app.use(userRoute);
-
-mongoose.Promise = global.Promise;
+app.use('/v1',userRoute);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -37,13 +40,15 @@ app.use((req, res, next) => {
   next(error);
 });
 
-app.use((error, req, res, next) => {
-  res.status(error.status || 500);
-  res.json({
-    error: {
-      message: error.message
-    }
-  });
+app.use((err, req, res, next) => {
+  if (err.error.isJoi) {
+    res.status(400).json({
+      type: err.type,
+      message: err.error.toString()
+    });
+  } else {
+    next(err);
+  }
 });
 
 //validamos la ejecucion, solo si existe conexion a BD, se puede conectar
