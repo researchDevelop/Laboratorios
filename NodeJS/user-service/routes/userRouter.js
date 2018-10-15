@@ -7,7 +7,7 @@ const validator = require('express-joi-validation')({
 });
 
 router.get('/user', UserController.getAllUser);
-router.post('/user',validator.body(signInValidator),UserController.addUser);
+router.post('/user',validator.body(signInValidator), UserController.addUser);
 router.delete('/user/:userId',UserController.removeUser);
 router.patch('/user/:userId', UserController.updateUser);
 

@@ -51,6 +51,17 @@ app.use((err, req, res, next) => {
   }
 });
 
+app.use((error, req, res, next) => {
+  res.status(111);
+  console.log(error);
+  res.json({
+    error: {
+      message: error
+    }
+  });
+});
+
+
 //validamos la ejecucion, solo si existe conexion a BD, se puede conectar
 db().then((db) => {
   app.listen(serverSettings.port, () => {

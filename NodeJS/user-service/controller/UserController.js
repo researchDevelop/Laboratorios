@@ -1,4 +1,4 @@
-const User = require('../repository/userModel');
+const User = require('../repository/UserSchema');
 
 let getAllUser = (req, res, next) => {
   User.find()
@@ -37,6 +37,7 @@ let addUser = (req, res, next) => {
     });
   })
   .catch(err => {
+    console.log(err)
     res.status(500).json({
       error: err
     });
