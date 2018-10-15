@@ -1,10 +1,7 @@
 let mongoose = require('mongoose');
-let logger = require('../config/logger');
-let bcrypt = require('bcrypt'),
-  SALT_WORK_FACTOR = 10;
-let {ErrorMessage} = require('../model/error');
-
-
+let bcrypt = require('bcrypt');
+let SALT_WORK_FACTOR= 10;
+let { ErrorMessage } = require('../model/error');
 
 let UserSchema = mongoose.Schema({
   lastname: String,
@@ -51,7 +48,6 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
 };
 var handleE11000 = function (error, res, next) {
   if (error.name === 'MongoError' && error.code === 11000) {
-    console.log(error);
     next(new ErrorMessage(409, 'There was a duplicate key error'));
   } else {
     next();

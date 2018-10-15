@@ -8,8 +8,8 @@ let getAllUser = (req, res, next) => {
       res.status(200).json(docs);
     })
     .catch(err => {
-      res.status(500).json({
-        error: err
+      res.status(err.status).json({
+        error: err.message
       });
     });
 };
@@ -22,8 +22,22 @@ let removeUser = (req, res, next) => {
       });
     })
     .catch(err => {
-      res.status(500).json({
-        error: err
+      res.status(err.status).json({
+        error: err.message
+      });
+    });
+};
+
+let removeByUsername = (req, res, next) => {
+  User.deleteOne({ username: req.params.username })
+    .then(result => {
+      res.status(200).json({
+        message: "Usuario Eliminado"
+      });
+    })
+    .catch(err => {
+      res.status(err.status).json({
+        error: err.message
       });
     });
 };
@@ -37,9 +51,8 @@ let addUser = (req, res, next) => {
     });
   })
   .catch(err => {
-    console.log(err)
-    res.status(500).json({
-      error: err
+    res.status(err.status).json({
+      error: err.message
     });
   });
 };
@@ -58,9 +71,8 @@ let updateUser = (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
+      res.status(err.status).json({
+        error: err.message
       });
     });
 };
@@ -69,5 +81,6 @@ module.exports = {
   getAllUser,
   addUser,
   updateUser,
-  removeUser
+  removeUser,
+  removeByUsername
 };
