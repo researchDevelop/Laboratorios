@@ -61,13 +61,14 @@ app.use((error, req, res, next) => {
   });
 });
 
+let server =  app.listen(serverSettings.port, () => {
+  logger.info(`Servicio escuchando en el puerto : ${serverSettings.port}`);
+});
 
 //validamos la ejecucion, solo si existe conexion a BD, se puede conectar
-db().then((db) => {
-  app.listen(serverSettings.port, () => {
-    logger.info(`Servicio escuchando en el puerto : ${serverSettings.port}`);
-  });
-}).catch((err) => {
+let init = module.exports = db().then((db) => server).catch((err) => {
   logger.error(err.stack);
   process.exit(1);
 });
+
+module.exports = {server,init};

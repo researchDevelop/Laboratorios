@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "debug": "nodemon --inspect index.js"
-},
+    "debug": "nodemon --inspect index.js",
+    "test": "./node_modules/.bin/mocha --reporter spec --exit"
+  },
   "keywords": [
     "NodeJS",
     "ExpressJS",
@@ -19,10 +20,13 @@
   },
   "dependencies": {
     "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
     "chalk": "^2.4.1",
     "express": "^4.16.3",
     "express-joi-validation": "^0.3.0",
     "express-session": "^1.15.6",
+    "mocha": "^5.2.0",
     "mongoose": "^5.3.1",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
