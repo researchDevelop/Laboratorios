@@ -51,15 +51,12 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.use((error, req, res, next) => {
-  res.status(111);
-  console.log(error);
-  res.json({
-    error: {
-      message: error
-    }
+function errorHandler(err, req, res, next) {
+  res.status(500).json({
+    message: 'Ruta Inexistente'
   });
-});
+}
+app.use(errorHandler);
 
 let server =  app.listen(serverSettings.port, () => {
   logger.info(`Servicio escuchando en el puerto : ${serverSettings.port}`);
