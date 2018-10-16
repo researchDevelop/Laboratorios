@@ -8,9 +8,4 @@ let sessionConfig = (app) => app.use(session({
   saveUninitialized: false
 }));
 
-//use sessions for tracking logins
-app.use(session({
-  
-}));
-
 module.exports = sessionConfig;
