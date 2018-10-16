@@ -1,18 +1,55 @@
 let express = require('express');
 let userRoute = require('./routes/userRouter');
-let { serverSettings } = require('./config/config');
-let logger = require('./config/logger');
+let { serverSettings, loggerFormat } = require('./config/config');
 const db = require('./db');
 const bodyParser = require('body-parser');
-let mongoose = require('mongoose');
 let sessionConfig = require('./config/session');
-mongoose.Promise = global.Promise;
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./api-docs.json');
+const winston = require('winston');
+const expressWinston = require('express-winston');
+const morgan = require('morgan');
+const addRequestId = require('express-request-id')();
+const logger = require('./config/logger');
+
 
 let app = express();
 sessionConfig(app);
 app.use(bodyParser.json());
+
+
+app.use(addRequestId);
+morgan.token('id', function getId(req) {
+  return req.id
+});
+
+app.use(morgan(loggerFormat, {
+  skip: function (req, res) {
+      return res.statusCode < 400
+  },
+  stream: process.stderr
+}));
+
+app.use(morgan(loggerFormat, {
+  skip: function (req, res) {
+      return res.statusCode >= 400
+  },
+  stream: process.stdout
+}));
+
+app.use(function (req, res, next) {
+  function afterResponse() {
+      res.removeListener('finish', afterResponse);
+      res.removeListener('close', afterResponse);
+      var log = logger.loggerInstance.child({
+          id: req.id
+      }, true)
+      log.info({res:res}, 'response')
+  }
+  res.on('finish', afterResponse);
+  res.on('close', afterResponse);
+  next();
+});
 
 //swagger doc
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -34,11 +71,6 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use((req, res, next) => {
-  const error = new Error("Not found");
-  error.status = 404;
-  next(error);
-});
 
 app.use((err, req, res, next) => {
   if (err.error.isJoi) {
@@ -50,21 +82,21 @@ app.use((err, req, res, next) => {
     next(err);
   }
 });
-
-function errorHandler(err, req, res, next) {
-  res.status(500).json({
-    message: 'Ruta Inexistente'
-  });
-}
-app.use(errorHandler);
+app.use(function(req,res){
+  res.status(404).json('Something broke!');
+});
+app.use(function(err, req, res, next) {
+  logger.logResponse(err.stack);
+  res.status(500).json('Something broke!');
+});
 
 let server =  app.listen(serverSettings.port, () => {
-  logger.info(`Servicio escuchando en el puerto : ${serverSettings.port}`);
+  logger.logResponse(`Servicio escuchando en el puerto : ${serverSettings.port}`);
 });
 
 //validamos la ejecucion, solo si existe conexion a BD, se puede conectar
 let init = module.exports = db().then((db) => server).catch((err) => {
-  logger.error(err.stack);
+  logger.logResponse(err.stack);
   process.exit(1);
 });
 

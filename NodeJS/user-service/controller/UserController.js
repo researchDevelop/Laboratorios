@@ -1,10 +1,12 @@
 const User = require('../repository/UserSchema');
+const logger = require('../config/logger');
 
 let getAllUser = (req, res, next) => {
   User.find()
     .select(["-_id"])
     .exec()
     .then(docs => {
+      logger.logResponse(req.body, docs, 200);
       res.status(200).json(docs);
     })
     .catch(err => {
@@ -31,6 +33,7 @@ let removeUser = (req, res, next) => {
 let removeByUsername = (req, res, next) => {
   User.deleteOne({ username: req.params.username })
     .then(result => {
+      logger.logResponse(req, res, 200);
       res.status(200).json({
         message: "Usuario Eliminado"
       });
@@ -41,6 +44,8 @@ let removeByUsername = (req, res, next) => {
       });
     });
 };
+
+
 
 let addUser = (req, res, next) => {
   const user = new User(req.body);

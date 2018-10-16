@@ -1,54 +1,20 @@
-const winston = require('winston');
+const bunyan = require('bunyan')
 
-// const logger = module.exports = winston.createLogger({
-//   transports: [new winston.transports.Console()],
-//   format: winston.format.combine(
-//     winston.format.colorize({ all: true }),
-//     winston.format.simple()
-//   )
-// });
+exports.loggerInstance = bunyan.createLogger({
+    name: 'transaction-notifier',
+    serializers: {
+        req: require('bunyan-express-serializer'),
+        res: bunyan.stdSerializers.res,
+        err: bunyan.stdSerializers.err
+    },
+    level: 'info'
+});
 
-// const logger = module.exports = winston.createLogger({
-//   format: winston.format.printf(info => {
-//     return JSON.stringify(info)
-//       .replace(/\{/g, '< wow ')
-//       .replace(/\:/g, ' such ')
-//       .replace(/\}/g, ' >')
-//   }),
-//   transports: [
-//     new winston.transports.Console(),
-//   ]
-// });
-
-// const logger = module.exports = winston.createLogger({
-//   transports: [new winston.transports.Console()],
-//   format: winston.format.combine(
-//     winston.format(function dynamicContent(info, opts) {
-//       info.message = '[dynamic content] ' + info.message;
-//       return info;
-//     })(),
-//     winston.format.simple()
-//   )
-// });
-
-const fs = require('fs');
-const { createLogger, format, transports } = winston;
-
-const logger = module.exports = createLogger({
-  format: format.combine(
-    format.timestamp(),
-    format.simple()
-  ),
-  transports: [
-    new transports.Console({
-      format: format.combine(
-        format.timestamp(),
-        format.colorize(),
-        format.simple()
-      )
-    }),
-    new transports.Stream({
-      stream: fs.createWriteStream('./logs/logger.log')
-    })
-  ]
-})
+exports.logResponse = function (id, body, statusCode) {
+    var log = this.loggerInstance.child({
+        id: id,
+        body: body,
+        statusCode: statusCode
+    }, true)
+    log.info('response')
+};
