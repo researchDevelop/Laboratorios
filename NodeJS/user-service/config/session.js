@@ -5,10 +5,12 @@ const uuid = require('uuid/v4');
 let sessionConfig = (app) => app.use(session({
   secret: 'work hard',
   resave: true,
-  saveUninitialized: false,
-  store: new MongoStore({
-    mongooseConnection: db
-  })
+  saveUninitialized: false
+}));
+
+//use sessions for tracking logins
+app.use(session({
+  
 }));
 
 module.exports = sessionConfig;
